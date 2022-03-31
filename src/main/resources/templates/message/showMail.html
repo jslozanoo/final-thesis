@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:,">
+    <title>Mail</title>
+</head>
+<body>
+<h1>Mail messages</h1>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Subject</th>
+        <th>Type</th>
+        <th>
+            <span th:if="${type == 'INBOX'}">Sender</span>
+            <span th:unless="${type == 'INBOX'}">To</span>
+        </th>
+        <th>View</th>
+        <th>Delete</th>
+
+    </tr>
+    <tr th:remove="all">
+        <td>1</td>
+        <td>Task</td>
+        <td>Inbox</td>
+        <td>jlozanop</td>
+        <td><a href="#">View</a></td>
+        <td><a href="#">Delete</a></td>
+    </tr>
+    <tr th:remove="all">
+        <td>2</td>
+        <td>Task 2</td>
+        <td>Sent</td>
+        <td>kacostap</td>
+        <td><a href="#">View</a></td>
+        <td><a href="#">Delete</a></td>
+    </tr>
+    <tr th:each="message: ${messages}">
+        <td th:text="${message.id}">123</td>
+        <td th:text="${message.subject}">Task</td>
+        <td th:text="${message.type}"></td>
+        <td th:text="${message.userSentOrToSend}"></td>
+        <td>
+        <form th:object="${userBasic}" th:action="@{'/mail/' + ${message.id} + '/show'}" method="post">
+            <input type="hidden" th:field="${userBasic.id}">
+            <button type="submit">Submit</button>
+        </form>
+        </td>
+        <td>
+            <form th:object="${userBasic}" th:action="@{'/mail/' + ${message.id} + '/delete'}"
+                  method="post">
+                <input type="hidden"  th:field="${userBasic.id}">
+                <input type="hidden" th:value="${message.type.name()}" th:field="*{type}">
+                <button type="submit">Submit</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+<!-- <span th:if="${message.type == T(jslozano.thesis.model.Type).SENT}">
+                <a href="#" th:href="@{'sent/message/' + ${message.id} + '/show'}">View</a>
+            </span>
+            <span th:unless="${message.type == T(jslozano.thesis.model.Type).SENT}">
+                <a href="#" th:href="@{'inbox/message/' + ${message.id} + '/show'}">View</a>
+            </span> -->

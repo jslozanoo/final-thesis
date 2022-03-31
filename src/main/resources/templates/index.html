@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:,">
+    <title>Application Message</title>
+</head>
+<body>
+<h1>Welcome to the application message!</h1></br>
+<h1>Please sign up</h1>
+<!--<h1><a href="/login">User Login</a></h1> -->
+
+<form th:action="@{/validationLogin}">
+    <label>Usuario</label>
+    <input type="text" name="user"></br>
+    <label>Password</label>
+    <input type="password" name="password"></br>
+    <input type="submit" value="Submit">
+
+</form>
+
+</body>
+</html>

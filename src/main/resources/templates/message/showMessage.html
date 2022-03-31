@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:,">
+    <title>Title</title>
+</head>
+<body>
+<h1><span th:if="${message.type == T(jslozano.thesis.model.Type).SENT}">Sent messages</span></h1>
+<h1><span th:unless="${message.type == T(jslozano.thesis.model.Type).SENT}">Inbox</span></h1>
+<table>
+    <tr>
+        <td>
+        <span th:if="${message.type == T(jslozano.thesis.model.Type).SENT}">To:</span>
+        <span th:unless="${message.type == T(jslozano.thesis.model.Type).SENT}">Sender:</span>
+        </td>
+        <td th:text="${message.userSentOrToSend}"></td>
+    </tr>
+    <tr>
+        <td>Subject:</td>
+        <td th:text="${message.subject}"></td>
+    </tr>
+    <tr>
+        <td>Body:</td>
+        <td th:text="${message.body}"></td>
+    </tr>
+    <tr>
+        <td>Attachments:</td>
+        <td th:text="${message.Attachment}"></td>
+    </tr>
+    <tr>
+        <td>Labels: </td>
+        <td>
+            <ul>
+                <li th:remove="all">Globant</li>
+                <li th:remove="all">TI</li>
+                <li th:each="label: ${message.labels}" th:text="${label.name}"></li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Message</title>
+</head>
+<body>
+<form th:object="${message}" th:action="@{/message/create}" method="post">
+    <label>To</label>
+    <input type="text" th:field="*{userSentOrToSend}"/><br> <!-- She/He Will have an inbox message -->
+    <label>Subject</label>
+    <input type="text" th:field="*{subject}"><br>
+    <label>Body</label>
+    <input type="text" th:field="*{body}"><br>
+    <label>Attachments</label>
+    <input type="text" th:field="*{attachment}"><br>
+    <button type="submit">Submit</button>
+</form>
+
+
+</body>
+</html>

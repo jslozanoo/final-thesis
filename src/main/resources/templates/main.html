@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+<h1 th:text="'Welcome ' + ${user.firstName}">Welcome</h1>
+<form th:object="${userBasic}" th:action="@{/mail/show}" method="post">
+    <input type="hidden" th:field="${user.id}">
+    <select th:field="*{type}">
+        <option th:value="'INBOX'" th:text="'inbox'"></option>
+        <option th:value="'SENT'"  th:text="'sent'"></option>
+    </select>
+    <button type="submit">Type</button>
+</form>
+<form th:object="${userUpdate}" th:action="@{/user/update}" method="post">
+    <input type="hidden" th:field="${user.id}">
+    <button type="submit" >Update User</button>
+</form>
+<form th:object="${userBasicToCreateMessage}" th:action="@{/message/new}" method="post">
+    <input type="hidden" th:field="${user.id}">
+    <button type="submit" >Create Message</button>
+</form>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Subject</th>
+        <th>Type</th>
+    </tr>
+    <tr th:remove="all">
+        <td>1</td>
+        <td>Task</td>
+        <td>Inbox</td>
+    </tr>
+    <tr th:remove="all">
+        <td>2</td>
+        <td>Task 2</td>
+        <td>Sent</td>
+    </tr>
+    <tr th:each="message: ${messages}">
+        <td th:text="${message.id}">123</td>
+        <td th:text="${message.subject}">Task</td>
+        <td th:text="${message.type}"></td>
+    </tr>
+</table>
+
+
+</body>
+</html>
