@@ -5,10 +5,12 @@ import jslozano.thesis.converter.UserCommandToUser;
 import jslozano.thesis.converter.UserToUserCommand;
 import jslozano.thesis.model.User;
 import jslozano.thesis.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -29,6 +31,16 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User not Found");
         }
 
+        return user;
+    }
+
+    @Override
+    public Optional<User> findByUserName(String userName) {
+        Optional<User> user = userRepository.findByUserName(userName);
+
+        if(user.isEmpty()){
+            throw new RuntimeException("User not found");
+        }
         return user;
     }
 

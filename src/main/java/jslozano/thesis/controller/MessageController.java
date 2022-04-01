@@ -6,12 +6,16 @@ import jslozano.thesis.model.Type;
 import jslozano.thesis.model.User;
 import jslozano.thesis.service.MessageService;
 import jslozano.thesis.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
+@Slf4j
 @Controller
 public class MessageController {
     private final MessageService messageService;
@@ -74,14 +78,31 @@ public class MessageController {
         return "message/messageform";
     }
     @RequestMapping("/message/create")
-    public String saveMessage(@ModelAttribute UserBasic userBasic,
-                              @ModelAttribute MessageCommand message){
-        // userBasic has the id of the sender, in to of the message is the name of the receiver
-        // Implement in the service the SavedMessageCommand and have in mind that I have
-        // To clone the message for the receiver.
+    public String saveMessage(@ModelAttribute MessageCommand message, Model model) {
+        try{
+            Optional<User> recipientUserOptional = userService
+                    .findByUserName(message.getUserSentOrToSend());
+            User recipientUser = recipientUserOptional.get();
+            message.setType(Type.SENT);
+            Long senderId = message.getUserId();
+            MessageCommand savedCommand = messageService.saveMessageCommand(senderId, message);
 
-        return "error";
+            MessageCommand messageCommandToRecipient = MessageCommand
+                    .copyForInbox(message, userService.findById(senderId).getUserName());
+            messageCommandToRecipient.setType(Type.INBOX);
+            MessageCommand savedRecipientCommand = messageService
+                    .saveMessageCommand(recipientUser.getId(), messageCommandToRecipient);
+            // To redirect and don't lose the id
+            UserBasic userBasic = new UserBasic();
+            userBasic.setId(senderId);
+            userBasic.setType(Type.SENT.name());
+            model.addAttribute("userBasic", userBasic);
+            model.addAttribute("messageId", savedCommand.getId());
 
+            return "user/userIdHandler";
+        }catch (Exception e){
+            return "error";
+        }
+        // Implement a button to return home
     }
-
 }

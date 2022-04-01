@@ -6,6 +6,7 @@
 </head>
 <body>
 <form th:object="${message}" th:action="@{/message/create}" method="post">
+    <input type="hidden" th:name="userId"  th:value="${user.id}">
     <label>To</label>
     <input type="text" th:field="*{userSentOrToSend}"/><br> <!-- She/He Will have an inbox message -->
     <label>Subject</label>
