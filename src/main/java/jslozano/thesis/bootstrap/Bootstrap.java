@@ -23,6 +23,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         userRepository.saveAll(getUsers());
+        userRepository.saveAll(populateDatabase());
 
     }
 
@@ -198,6 +199,63 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         users.add(user2);
         users.add(user3);
         users.add(user4);
+        return users;
+    }
+    private List<User> populateDatabase(){
+        List<User> users = new ArrayList<>();
+        User user1 = new User();
+        User user2 = new User();
+
+        user1.setUserName("jlozanop");
+        user1.setPassword("12345");
+        user1.setFirstName("Juan");
+        user1.setLastName("Lozano");
+        user1.setIdentificationNumber(123456789L);
+        user1.setAddress("13626 E Dakota Ave");
+        user1.setZipCode("80012");
+        user1.setState("Colorado");
+        user1.setCountry("United States");
+
+
+        user2.setUserName("juanp");
+        user2.setPassword("34567");
+        user2.setFirstName("Sebastian");
+        user2.setLastName("Penagos");
+        user2.setIdentificationNumber(1011121314L);
+        user2.setAddress("124 S Elkhart St");
+        user2.setZipCode("43004");
+        user2.setState("Ohio");
+        user2.setCountry("United States");
+
+        for (int i = 0; i < 100; i++){
+            // Message from user1 to user2
+            Message message1 = new Message();
+            message1.setSubject("Task " + i);
+            message1.setBody(i + "");
+            message1.setAttachment("logo.jpg");
+            message1.setUserSentOrToSend(user2.getUserName());
+            message1.setType(Type.SENT);
+
+            user1.getMessages().add(message1);
+            message1.setUser(user1);
+
+            //Clone message for user 2, one message can´t have two IDs
+            Message message1Sent = new Message();
+            message1Sent.setSubject("Task " + i);
+            message1Sent.setBody(i + "");
+            message1Sent.setAttachment("logo.jpg");
+            message1Sent.setUserSentOrToSend(user1.getUserName());
+            message1Sent.setType(Type.INBOX);
+
+            user2.getMessages().add(message1Sent);
+            message1Sent.setUser(user2);
+
+        }
+        users.add(user1);
+        users.add(user2);
+
+
+
         return users;
 
     }

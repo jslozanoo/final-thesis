@@ -5,19 +5,18 @@ import jslozano.thesis.converter.UserCommandToUser;
 import jslozano.thesis.converter.UserToUserCommand;
 import jslozano.thesis.model.User;
 import jslozano.thesis.repositories.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserCommandToUser userCommandToUser;
     private final UserToUserCommand userToUserCommand;
 
-    public UserServiceImpl(UserRepository userRepository, UserCommandToUser userCommandToUser, UserToUserCommand userToUserCommand) {
+    public UserServiceImpl(UserRepository userRepository, UserCommandToUser userCommandToUser,
+                           UserToUserCommand userToUserCommand) {
         this.userRepository = userRepository;
         this.userCommandToUser = userCommandToUser;
         this.userToUserCommand = userToUserCommand;

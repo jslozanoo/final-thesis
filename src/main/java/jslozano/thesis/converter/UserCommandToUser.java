@@ -18,11 +18,21 @@ public class UserCommandToUser implements Converter<UserCommand, User> {
         }
 
         User user = new User();
+
+        // If something broke, i change the next line
+        user.setId(source.getId());
         user.setUserName(source.getUserName());
         user.setPassword(source.getPassword());
         user.setFirstName(source.getFirstName());
         user.setLastName(source.getLastName());
-        user.setIdentificationNumber(Long.parseLong(source.getIdentificationNumberString()));
+
+        if (source.getIdentificationNumberString() == null){
+            user.setIdentificationNumber(null);
+        }
+        else {
+            user.setIdentificationNumber(Long.parseLong(source.getIdentificationNumberString()));
+        }
+
         user.setAddress(source.getAddress());
         user.setZipCode(source.getZipCode());
         user.setState(source.getState());
